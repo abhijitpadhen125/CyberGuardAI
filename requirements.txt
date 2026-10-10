@@ -1,6 +1,8 @@
+
 Flask
 Flask-WTF
 Flask-Limiter
 requests
 python-dotenv
 gunicorn
+reportlab
