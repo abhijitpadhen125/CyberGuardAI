@@ -1,0 +1,316 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Security Scan - CyberGuard AI{% endblock %}
+
+{% block breadcrumb %}Security Scan{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .scan-page {
+        width: 100%;
+    }
+
+    .scan-header {
+        background: linear-gradient(135deg, #111827, #1e3a8a);
+        color: white;
+        border-radius: 18px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    }
+
+    .scan-header h1 {
+        margin: 0 0 10px;
+        font-size: 28px;
+    }
+
+    .scan-header p {
+        margin: 0;
+        color: #dbeafe;
+        line-height: 1.6;
+    }
+
+    .scan-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    .scan-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 18px;
+        background: #eff6ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        margin-bottom: 20px;
+    }
+
+    .scan-card h2 {
+        margin: 0 0 10px;
+        color: #111827;
+        font-size: 22px;
+    }
+
+    .scan-card p {
+        color: #6b7280;
+        line-height: 1.7;
+    }
+
+    .scan-features {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 25px 0;
+    }
+
+    .feature {
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 18px;
+    }
+
+    .feature strong {
+        display: block;
+        color: #111827;
+        margin-bottom: 6px;
+    }
+
+    .feature span {
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .scan-button {
+        width: 100%;
+        border: none;
+        border-radius: 10px;
+        padding: 14px 20px;
+        background: #2563eb;
+        color: white;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .scan-button:hover {
+        background: #1d4ed8;
+    }
+
+    .scan-note {
+        margin-top: 15px;
+        text-align: center;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .loading {
+        display: none;
+        margin-top: 20px;
+        padding: 15px;
+        background: #eff6ff;
+        color: #1e40af;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    @media (max-width: 700px) {
+
+        .scan-header h1 {
+            font-size: 23px;
+        }
+
+        .scan-features {
+            grid-template-columns: 1fr;
+        }
+
+        .scan-card {
+            padding: 22px;
+        }
+
+    }
+
+</style>
+
+
+<div class="scan-page">
+
+    <!-- HEADER -->
+
+    <div class="scan-header">
+
+        <h1>
+            🔍 Security Scan
+        </h1>
+
+        <p>
+            Scan your device, identify security findings,
+            calculate risk, and generate an AI-powered
+            security analysis.
+        </p>
+
+    </div>
+
+
+    <!-- SCAN CARD -->
+
+    <div class="scan-card">
+
+        <div class="scan-icon">
+            🛡️
+        </div>
+
+        <h2>
+            Start CyberGuard AI Security Scan
+        </h2>
+
+        <p>
+            CyberGuard AI will check your device configuration,
+            security settings, network services, and available
+            vulnerability information.
+        </p>
+
+
+        <!-- FEATURES -->
+
+        <div class="scan-features">
+
+            <div class="feature">
+
+                <strong>
+                    💻 Device Information
+                </strong>
+
+                <span>
+                    Detect operating system, hostname,
+                    processor and user information.
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <strong>
+                    🔐 Security Checks
+                </strong>
+
+                <span>
+                    Check firewall configuration,
+                    operating system and network services.
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <strong>
+                    ⚠️ Vulnerability Analysis
+                </strong>
+
+                <span>
+                    Enrich security findings using
+                    vulnerability database information.
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <strong>
+                    🤖 AI Security Analysis
+                </strong>
+
+                <span>
+                    Analyze findings and provide
+                    security recommendations.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- SCAN FORM -->
+
+        <form
+            method="POST"
+            action="{{ url_for('scan') }}"
+            onsubmit="startScan()"
+        >
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+            >
+
+            <button
+                type="submit"
+                class="scan-button"
+                id="scanButton"
+            >
+                🔍 Start Security Scan
+            </button>
+
+        </form>
+
+
+        <div
+            class="loading"
+            id="loadingMessage"
+        >
+            ⏳ Security scan is running...
+            Please wait.
+        </div>
+
+
+        <div class="scan-note">
+
+            The scan may take a few moments while
+            vulnerability information is checked.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function startScan() {
+
+    const button =
+        document.getElementById("scanButton");
+
+    const loading =
+        document.getElementById("loadingMessage");
+
+    button.disabled = true;
+
+    button.innerText =
+        "⏳ Scanning...";
+
+    loading.style.display =
+        "block";
+
+}
+
+</script>
+
+
+{% endblock %}

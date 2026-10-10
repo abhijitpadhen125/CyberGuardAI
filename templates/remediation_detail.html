@@ -1,0 +1,844 @@
+﻿{% extends "base.html" %}
+
+{% block title %}
+Remediation Details - CyberGuard AI
+{% endblock %}
+
+{% block breadcrumb %}
+Remediation Details
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .remediation-detail-page {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
+    .detail-hero {
+        background: linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+        color: white;
+
+        padding: 28px;
+
+        border-radius: 18px;
+
+        margin-bottom: 22px;
+    }
+
+    .detail-hero h1 {
+        margin: 0 0 8px 0;
+
+        font-size: 27px;
+    }
+
+    .detail-hero p {
+        margin: 0;
+
+        font-size: 14px;
+
+        opacity: 0.9;
+    }
+
+
+    /* =====================================================
+       BACK BUTTON
+       ===================================================== */
+
+    .back-link {
+        display: inline-block;
+
+        margin-top: 18px;
+
+        color: white;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        background:
+            rgba(255,255,255,0.15);
+
+        padding:
+            8px 13px;
+
+        border-radius: 8px;
+    }
+
+    .back-link:hover {
+        background:
+            rgba(255,255,255,0.25);
+
+        color: white;
+    }
+
+
+    /* =====================================================
+       MAIN GRID
+       ===================================================== */
+
+    .detail-grid {
+        display: grid;
+
+        grid-template-columns:
+            2fr 1fr;
+
+        gap: 20px;
+    }
+
+
+    /* =====================================================
+       CARDS
+       ===================================================== */
+
+    .detail-card {
+        background: white;
+
+        border:
+            1px solid #e5e7eb;
+
+        border-radius: 16px;
+
+        padding: 24px;
+
+        margin-bottom: 20px;
+
+        box-shadow:
+            0 4px 15px rgba(0,0,0,0.04);
+    }
+
+    .card-title {
+        margin: 0 0 18px 0;
+
+        font-size: 19px;
+
+        font-weight: 700;
+
+        color: #111827;
+    }
+
+
+    /* =====================================================
+       FINDING
+       ===================================================== */
+
+    .finding-title {
+        font-size: 22px;
+
+        font-weight: 700;
+
+        color: #111827;
+
+        margin-bottom: 18px;
+    }
+
+
+    /* =====================================================
+       SEVERITY
+       ===================================================== */
+
+    .severity {
+        display: inline-block;
+
+        padding:
+            6px 12px;
+
+        border-radius: 20px;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        margin-bottom: 18px;
+    }
+
+    .severity-critical {
+        background: #fee2e2;
+
+        color: #b91c1c;
+    }
+
+    .severity-high {
+        background: #ffedd5;
+
+        color: #c2410c;
+    }
+
+    .severity-medium {
+        background: #fef3c7;
+
+        color: #a16207;
+    }
+
+    .severity-low {
+        background: #dcfce7;
+
+        color: #15803d;
+    }
+
+    .severity-informational {
+        background: #dbeafe;
+
+        color: #1d4ed8;
+    }
+
+
+    /* =====================================================
+       INFO GRID
+       ===================================================== */
+
+    .info-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 14px;
+
+        margin-top: 18px;
+    }
+
+    .info-box {
+        background: #f8fafc;
+
+        border-radius: 10px;
+
+        padding: 15px;
+    }
+
+    .info-label {
+        color: #64748b;
+
+        font-size: 11px;
+
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        color: #111827;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       STATUS
+       ===================================================== */
+
+    .status {
+        display: inline-block;
+
+        padding:
+            6px 12px;
+
+        border-radius: 20px;
+
+        font-size: 11px;
+
+        font-weight: 700;
+    }
+
+    .status-open {
+        background: #fee2e2;
+
+        color: #b91c1c;
+    }
+
+    .status-progress {
+        background: #fef3c7;
+
+        color: #a16207;
+    }
+
+    .status-resolved {
+        background: #dcfce7;
+
+        color: #15803d;
+    }
+
+
+    /* =====================================================
+       STATUS FORM
+       ===================================================== */
+
+    .status-form {
+        margin-top: 15px;
+    }
+
+    .status-label {
+        display: block;
+
+        color: #374151;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        margin-bottom: 7px;
+    }
+
+    .status-select {
+        width: 100%;
+
+        padding:
+            11px 12px;
+
+        border:
+            1px solid #d1d5db;
+
+        border-radius: 8px;
+
+        background: white;
+
+        color: #111827;
+
+        font-size: 13px;
+
+        margin-bottom: 12px;
+
+        outline: none;
+    }
+
+    .status-select:focus {
+        border-color: #2563eb;
+    }
+
+    .update-button {
+        width: 100%;
+
+        border: none;
+
+        background: #2563eb;
+
+        color: white;
+
+        padding: 11px;
+
+        border-radius: 8px;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+    .update-button:hover {
+        background: #1d4ed8;
+    }
+
+
+    /* =====================================================
+       TIMELINE
+       ===================================================== */
+
+    .timeline {
+        margin-top: 10px;
+    }
+
+    .timeline-item {
+        display: flex;
+
+        gap: 12px;
+
+        padding-bottom: 18px;
+    }
+
+    .timeline-dot {
+        width: 10px;
+
+        height: 10px;
+
+        background: #2563eb;
+
+        border-radius: 50%;
+
+        margin-top: 5px;
+
+        flex-shrink: 0;
+    }
+
+    .timeline-content {
+        color: #6b7280;
+
+        font-size: 13px;
+
+        line-height: 1.5;
+    }
+
+    .timeline-content strong {
+        color: #374151;
+    }
+
+
+    /* =====================================================
+       QUICK ACTIONS
+       ===================================================== */
+
+    .quick-action {
+        display: block;
+
+        text-decoration: none;
+
+        background: #f8fafc;
+
+        color: #374151;
+
+        padding: 11px 13px;
+
+        border-radius: 8px;
+
+        margin-bottom: 8px;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        border:
+            1px solid #e5e7eb;
+    }
+
+    .quick-action:hover {
+        background: #eff6ff;
+
+        color: #1d4ed8;
+
+        border-color: #bfdbfe;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 850px) {
+
+        .detail-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+    @media (max-width: 600px) {
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .detail-hero h1 {
+            font-size: 22px;
+        }
+
+    }
+
+</style>
+
+
+<div class="remediation-detail-page">
+
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
+    <div class="detail-hero">
+
+        <h1>
+             Remediation Details
+        </h1>
+
+        <p>
+            Manage and track the security issue detected
+            by CyberGuard AI.
+        </p>
+
+        <a
+            href="{{ url_for('remediation') }}"
+            class="back-link"
+        >
+             Back to Remediation
+        </a>
+
+    </div>
+
+
+    <div class="detail-grid">
+
+
+        <!-- =================================================
+             LEFT SIDE
+             ================================================= -->
+
+        <div>
+
+
+            <!-- FINDING CARD -->
+
+            <div class="detail-card">
+
+                <h2 class="card-title">
+                    Security Finding
+                </h2>
+
+
+                <div class="finding-title">
+
+                    {{ item.finding_title }}
+
+                </div>
+
+
+                <span
+                    class="severity
+
+                    {% if item.severity == 'Critical' %}
+
+                        severity-critical
+
+                    {% elif item.severity == 'High' %}
+
+                        severity-high
+
+                    {% elif item.severity == 'Medium' %}
+
+                        severity-medium
+
+                    {% elif item.severity == 'Low' %}
+
+                        severity-low
+
+                    {% else %}
+
+                        severity-informational
+
+                    {% endif %}
+
+                    "
+                >
+
+                    {{ item.severity }}
+
+                </span>
+
+
+                <div class="info-grid">
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Remediation ID
+                        </div>
+
+                        <div class="info-value">
+                            #{{ item.id }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Scan ID
+                        </div>
+
+                        <div class="info-value">
+                            #{{ item.scan_id }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Created
+                        </div>
+
+                        <div class="info-value">
+                            {{ item.created_at }}
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+                            Last Updated
+                        </div>
+
+                        <div class="info-value">
+                            {{ item.updated_at }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIVITY -->
+
+            <div class="detail-card">
+
+                <h2 class="card-title">
+                    Activity
+                </h2>
+
+                <div class="timeline">
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot"></div>
+
+                        <div class="timeline-content">
+
+                            <strong>
+                                Finding Created
+                            </strong>
+
+                            <br>
+
+                            Remediation item was created from
+                            security scan #{{ item.scan_id }}.
+
+                            <br>
+
+                            {{ item.created_at }}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot"></div>
+
+                        <div class="timeline-content">
+
+                            <strong>
+                                Current Status
+                            </strong>
+
+                            <br>
+
+                            The current remediation status is:
+
+                            <strong>
+                                {{ item.status }}
+                            </strong>
+
+                            <br>
+
+                            Last updated:
+
+                            {{ item.updated_at }}
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             RIGHT SIDE
+             ================================================= -->
+
+        <div>
+
+
+            <!-- STATUS CARD -->
+
+            <div class="detail-card">
+
+                <h2 class="card-title">
+                    Remediation Status
+                </h2>
+
+
+                <div>
+
+                    <span
+                        class="status
+
+                        {% if item.status == 'Open' %}
+
+                            status-open
+
+                        {% elif item.status == 'In Progress' %}
+
+                            status-progress
+
+                        {% elif item.status == 'Resolved' %}
+
+                            status-resolved
+
+                        {% endif %}
+
+                        "
+                    >
+
+                        {{ item.status }}
+
+                    </span>
+
+                </div>
+
+
+                <!-- IMPORTANT:
+                     This endpoint requires remediation_id.
+                -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'update_remediation',
+                        remediation_id=item.id
+                    ) }}"
+                    class="status-form"
+                >
+
+
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                    >
+
+
+                    <label
+                        for="status"
+                        class="status-label"
+                    >
+                        Update Status
+                    </label>
+
+
+                    <select
+                        name="status"
+                        id="status"
+                        class="status-select"
+                    >
+
+                        <option
+                            value="Open"
+                            {% if item.status == 'Open' %}
+                                selected
+                            {% endif %}
+                        >
+                            Open
+                        </option>
+
+
+                        <option
+                            value="In Progress"
+                            {% if item.status == 'In Progress' %}
+                                selected
+                            {% endif %}
+                        >
+                            In Progress
+                        </option>
+
+
+                        <option
+                            value="Resolved"
+                            {% if item.status == 'Resolved' %}
+                                selected
+                            {% endif %}
+                        >
+                            Resolved
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        type="submit"
+                        class="update-button"
+                    >
+                         Update Status
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- QUICK ACTIONS -->
+
+            <div class="detail-card">
+
+                <h2 class="card-title">
+                    Quick Actions
+                </h2>
+
+
+                <a
+                    href="{{ url_for(
+                        'scan_details',
+                        scan_id=item.scan_id
+                    ) }}"
+                    class="quick-action"
+                >
+                     View Scan Details
+                </a>
+
+
+                <a
+                    href="{{ url_for('remediation') }}"
+                    class="quick-action"
+                >
+                     All Remediation Issues
+                </a>
+
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="quick-action"
+                >
+                     Dashboard
+                </a>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+{% endblock %}
+

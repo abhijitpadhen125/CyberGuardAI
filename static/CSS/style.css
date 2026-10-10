@@ -1,0 +1,368 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    background: #0f172a;
+    color: white;
+    padding: 25px 18px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.brand-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2563eb;
+    border-radius: 10px;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.user-box {
+    background: #1e293b;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.user-box strong {
+    display: block;
+}
+
+.user-box span {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.nav-title {
+    color: #64748b;
+    font-size: 11px;
+    margin: 18px 10px 8px;
+    text-transform: uppercase;
+}
+
+.nav-link {
+    display: block;
+    color: #cbd5e1;
+    padding: 11px 12px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+}
+
+.nav-link:hover {
+    background: #1e293b;
+    color: white;
+}
+
+.main {
+    margin-left: 250px;
+    min-height: 100vh;
+}
+
+.topbar {
+    height: 70px;
+    background: white;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+.content {
+    padding: 30px;
+}
+
+.footer {
+    padding: 20px 30px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+@media (max-width: 700px) {
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+    }
+
+    .main {
+        margin-left: 0;
+    }
+
+    .content {
+        padding: 15px;
+    }
+}
+/* =========================================================
+   CYBERGUARD AI - SIDEBAR / MAIN CONTENT FIX
+   ========================================================= */
+
+/* Main page area */
+.main-content {
+    margin-left: 162px !important;
+    width: calc(100% - 162px) !important;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Top bar */
+.topbar {
+    margin-left: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+/* Page content */
+.page-content {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Dashboard and other page containers */
+.dashboard {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Prevent large cards from going underneath sidebar */
+.welcome,
+.card,
+.stats-grid,
+.main-grid {
+    box-sizing: border-box;
+}
+
+/* Desktop sidebar */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 162px;
+    height: 100vh;
+    z-index: 1000;
+}
+
+/* Desktop layout */
+@media (min-width: 1001px) {
+
+    .main-content {
+        margin-left: 162px !important;
+        width: calc(100% - 162px) !important;
+    }
+
+}
+
+/* Mobile / small screen */
+@media (max-width: 1000px) {
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+
+    .sidebar {
+        z-index: 2000;
+    }
+
+}
+/* =========================================================
+   FINAL SIDEBAR FIX
+   ========================================================= */
+
+.sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+
+    width: 240px !important;
+    min-width: 240px !important;
+    max-width: 240px !important;
+
+    height: 100vh !important;
+
+    z-index: 9999 !important;
+
+    box-sizing: border-box !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+
+/* MAIN CONTENT */
+
+.main-content {
+    margin-left: 240px !important;
+
+    width: calc(100% - 240px) !important;
+
+    min-height: 100vh !important;
+
+    box-sizing: border-box !important;
+}
+
+
+/* TOP BAR */
+
+.topbar {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+
+/* PAGE CONTENT */
+
+.page-content {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+
+/* SIDEBAR TEXT */
+
+.sidebar a {
+    white-space: nowrap !important;
+}
+
+
+/* SIDEBAR BRAND */
+
+.sidebar .brand,
+.sidebar .logo,
+.sidebar .brand-name {
+    white-space: nowrap !important;
+}
+
+
+/* USER INFORMATION */
+
+.sidebar .user-box,
+.sidebar .user-info {
+    overflow: hidden !important;
+}
+
+
+/* DESKTOP */
+
+@media (min-width: 1001px) {
+
+    .sidebar {
+        width: 240px !important;
+        min-width: 240px !important;
+        max-width: 240px !important;
+    }
+
+    .main-content {
+        margin-left: 240px !important;
+        width: calc(100% - 240px) !important;
+    }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 1000px) {
+
+    .sidebar {
+        width: 240px !important;
+        min-width: 240px !important;
+        max-width: 240px !important;
+    }
+
+    .main-content {
+        margin-left: 240px !important;
+        width: calc(100% - 240px) !important;
+    }
+
+}
+/* =========================================================
+   SECURITY ALERT BADGE
+   ========================================================= */
+
+.sidebar-alert-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.alert-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    min-width: 20px !important;
+    height: 20px !important;
+
+    padding: 0 6px !important;
+
+    background: #ef4444 !important;
+    color: #ffffff !important;
+
+    border-radius: 20px !important;
+
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    line-height: 20px !important;
+
+    flex-shrink: 0 !important;
+}
+/* Security Alert Badge */
+
+.sidebar-alert-link {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.alert-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    min-width: 20px !important;
+    height: 20px !important;
+
+    padding: 0 6px !important;
+
+    background: #ef4444 !important;
+    color: #ffffff !important;
+
+    border-radius: 20px !important;
+
+    font-size: 11px !important;
+    font-weight: 700 !important;
+
+    flex-shrink: 0 !important;
+}

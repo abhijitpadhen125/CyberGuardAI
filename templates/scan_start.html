@@ -1,0 +1,1116 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Start Security Scan - CyberGuard AI{% endblock %}
+
+{% block breadcrumb %}Security Scan{% endblock %}
+
+{% block content %}
+
+<div class="scan-start-page">
+
+    <!-- HERO -->
+    <div class="scan-hero">
+
+        <div class="hero-icon">
+            
+        </div>
+
+        <div class="hero-content">
+
+            <span class="hero-label">
+                CYBERGUARD AI SECURITY CENTER
+            </span>
+
+            <h1>Device Security Scanner</h1>
+
+            <p>
+                Scan your device for security configuration issues,
+                network exposure and potential vulnerabilities.
+            </p>
+
+        </div>
+
+        <div class="scanner-ready">
+            <span class="status-dot"></span>
+            Scanner Ready
+        </div>
+
+    </div>
+
+
+    <!-- MAIN LAYOUT -->
+    <div class="scan-layout">
+
+        <!-- LEFT CARD -->
+        <div class="scan-card">
+
+            <div class="card-icon">
+                
+            </div>
+
+            <h2>Ready to Scan?</h2>
+
+            <p class="description">
+                CyberGuard AI will perform a security assessment
+                of this device and generate a detailed security report.
+            </p>
+
+
+            <!-- SECURITY CHECKS -->
+            <div class="checks">
+
+                <div class="check">
+
+                    <div class="check-icon">
+                        
+                    </div>
+
+                    <div>
+                        <strong>Firewall Check</strong>
+
+                        <small>
+                            Check firewall configuration
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="check">
+
+                    <div class="check-icon">
+                        
+                    </div>
+
+                    <div>
+                        <strong>Operating System</strong>
+
+                        <small>
+                            Analyze operating system information
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="check">
+
+                    <div class="check-icon">
+                        
+                    </div>
+
+                    <div>
+                        <strong>Network Services</strong>
+
+                        <small>
+                            Check listening network services
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="check">
+
+                    <div class="check-icon">
+                        
+                    </div>
+
+                    <div>
+                        <strong>Security Analysis</strong>
+
+                        <small>
+                            Analyze detected security findings
+                        </small>
+                    </div>
+
+                </div>
+
+
+                <div class="check">
+
+                    <div class="check-icon">
+                        
+                    </div>
+
+                    <div>
+                        <strong>AI Security Analysis</strong>
+
+                        <small>
+                            Generate security recommendations
+                        </small>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- START SCAN FORM -->
+            <form
+                method="POST"
+                action="{{ url_for('scan') }}"
+                id="scanForm"
+            >
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+                <button
+                    type="submit"
+                    class="start-button"
+                    id="startScanButton"
+                >
+                    <span class="button-icon">
+                        
+                    </span>
+
+                    <span>
+                        Start Security Scan
+                    </span>
+                </button>
+
+            </form>
+
+
+            <!-- SCAN LOADING -->
+            <div
+                id="scanLoading"
+                class="scan-loading"
+                style="display: none;"
+            >
+
+                <div class="loading-spinner"></div>
+
+                <h3>
+                    Security Scan in Progress
+                </h3>
+
+                <p id="scanStatus">
+                    Initializing CyberGuard AI scanner...
+                </p>
+
+                <div class="loading-progress">
+
+                    <div
+                        id="loadingBar"
+                        class="loading-bar"
+                    ></div>
+
+                </div>
+
+                <div
+                    id="loadingPercent"
+                    class="loading-percent"
+                >
+                    0%
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT CARD -->
+        <div class="information-card">
+
+            <h2>How the Scan Works</h2>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    1
+                </div>
+
+                <div class="step-content">
+
+                    <strong>
+                        Device Detection
+                    </strong>
+
+                    <p>
+                        CyberGuard AI identifies basic device
+                        and operating system information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    2
+                </div>
+
+                <div class="step-content">
+
+                    <strong>
+                        Security Checks
+                    </strong>
+
+                    <p>
+                        The scanner checks important security
+                        configurations and network services.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    3
+                </div>
+
+                <div class="step-content">
+
+                    <strong>
+                        Risk Analysis
+                    </strong>
+
+                    <p>
+                        Detected findings are analyzed and
+                        a security risk score is calculated.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    4
+                </div>
+
+                <div class="step-content">
+
+                    <strong>
+                        AI Security Analysis
+                    </strong>
+
+                    <p>
+                        The AI agent explains security findings
+                        and provides recommended actions.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-number">
+                    5
+                </div>
+
+                <div class="step-content">
+
+                    <strong>
+                        Security Report
+                    </strong>
+
+                    <p>
+                        Your scan results can be viewed,
+                        tracked and exported as a PDF report.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- SECURITY NOTE -->
+            <div class="security-note">
+
+                <div class="note-icon">
+                    
+                </div>
+
+                <div>
+
+                    <strong>
+                        Secure Scan
+                    </strong>
+
+                    <p>
+                        Your scan results are stored in the
+                        CyberGuard AI database for your account.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* ================================
+   PAGE
+================================ */
+
+.scan-start-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* ================================
+   HERO
+================================ */
+
+.scan-hero {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 30px;
+
+    margin-bottom: 25px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0f172a,
+            #1e3a8a
+        );
+
+    color: white;
+
+    box-shadow:
+        0 12px 30px rgba(15, 23, 42, 0.18);
+}
+
+
+.hero-icon {
+    width: 65px;
+    height: 65px;
+
+    min-width: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    font-size: 32px;
+}
+
+
+.hero-content {
+    flex: 1;
+}
+
+
+.hero-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    color: #bfdbfe;
+}
+
+
+.hero-content h1 {
+    margin: 0 0 8px;
+
+    font-size: 28px;
+}
+
+
+.hero-content p {
+    margin: 0;
+
+    color: #cbd5e1;
+
+    line-height: 1.5;
+}
+
+
+.scanner-ready {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px 14px;
+
+    border-radius: 25px;
+
+    background:
+        rgba(34, 197, 94, 0.12);
+
+    color: #bbf7d0;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #22c55e;
+
+    box-shadow:
+        0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+
+/* ================================
+   MAIN LAYOUT
+================================ */
+
+.scan-layout {
+    display: grid;
+
+    grid-template-columns:
+        1.1fr 0.9fr;
+
+    gap: 22px;
+}
+
+
+/* ================================
+   SCAN CARD
+================================ */
+
+.scan-card {
+    padding: 30px;
+
+    background: white;
+
+    border:
+        1px solid #e2e8f0;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 7px 25px rgba(0, 0, 0, 0.05);
+}
+
+
+.card-icon {
+    width: 55px;
+    height: 55px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: #eff6ff;
+
+    font-size: 25px;
+}
+
+
+.scan-card h2 {
+    margin: 18px 0 8px;
+
+    font-size: 25px;
+}
+
+
+.description {
+    margin: 0 0 25px;
+
+    color: #64748b;
+
+    line-height: 1.7;
+}
+
+
+/* ================================
+   SECURITY CHECKS
+================================ */
+
+.checks {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 11px;
+
+    margin-bottom: 25px;
+}
+
+
+.check {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 12px;
+
+    border-radius: 10px;
+
+    background: #f8fafc;
+
+    border:
+        1px solid #f1f5f9;
+}
+
+
+.check-icon {
+    width: 30px;
+    height: 30px;
+
+    min-width: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+
+    color: #16a34a;
+
+    font-weight: bold;
+}
+
+
+.check strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 14px;
+}
+
+
+.check small {
+    color: #64748b;
+
+    font-size: 12px;
+}
+
+
+/* ================================
+   START BUTTON
+================================ */
+
+.start-button {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #2563eb,
+            #1d4ed8
+        );
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(37, 99, 235, 0.22);
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+
+.start-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(37, 99, 235, 0.3);
+}
+
+
+.start-button:disabled {
+    cursor: not-allowed;
+
+    opacity: 0.7;
+}
+
+
+.button-icon {
+    font-size: 18px;
+}
+
+
+/* ================================
+   LOADING AREA
+================================ */
+
+.scan-loading {
+    margin-top: 20px;
+
+    padding: 22px;
+
+    text-align: center;
+
+    border-radius: 14px;
+
+    background: #eff6ff;
+
+    border:
+        1px solid #dbeafe;
+}
+
+
+.loading-spinner {
+    width: 45px;
+    height: 45px;
+
+    margin: 0 auto 14px;
+
+    border:
+        4px solid #dbeafe;
+
+    border-top-color: #2563eb;
+
+    border-radius: 50%;
+
+    animation:
+        scanSpin 1s linear infinite;
+}
+
+
+@keyframes scanSpin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+.scan-loading h3 {
+    margin: 5px 0 8px;
+
+    color: #1e3a8a;
+
+    font-size: 18px;
+}
+
+
+.scan-loading p {
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 13px;
+}
+
+
+.loading-progress {
+    width: 100%;
+
+    height: 9px;
+
+    margin-top: 18px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #dbeafe;
+}
+
+
+.loading-bar {
+    width: 0%;
+
+    height: 100%;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #2563eb,
+            #60a5fa
+        );
+
+    transition:
+        width 0.4s ease;
+}
+
+
+.loading-percent {
+    margin-top: 8px;
+
+    color: #2563eb;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+
+/* ================================
+   INFORMATION CARD
+================================ */
+
+.information-card {
+    padding: 30px;
+
+    background: white;
+
+    border:
+        1px solid #e2e8f0;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 7px 25px rgba(0, 0, 0, 0.05);
+}
+
+
+.information-card h2 {
+    margin: 0 0 25px;
+
+    font-size: 22px;
+}
+
+
+/* ================================
+   STEPS
+================================ */
+
+.step {
+    display: flex;
+
+    gap: 13px;
+
+    margin-bottom: 20px;
+}
+
+
+.step-number {
+    width: 32px;
+    height: 32px;
+
+    min-width: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #dbeafe;
+
+    color: #1d4ed8;
+
+    font-weight: bold;
+}
+
+
+.step-content strong {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 14px;
+}
+
+
+.step-content p {
+    margin: 0;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ================================
+   SECURITY NOTE
+================================ */
+
+.security-note {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-top: 25px;
+
+    padding: 15px;
+
+    border-radius: 11px;
+
+    background: #eff6ff;
+
+    color: #1e40af;
+}
+
+
+.note-icon {
+    font-size: 20px;
+}
+
+
+.security-note strong {
+    display: block;
+
+    margin-bottom: 3px;
+}
+
+
+.security-note p {
+    margin: 0;
+
+    color: #475569;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 900px) {
+
+    .scan-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .scan-hero {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .scan-hero {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .scanner-ready {
+        margin-left: 0;
+    }
+
+    .scan-card,
+    .information-card {
+        padding: 22px;
+    }
+
+}
+
+</style>
+
+
+<script>
+
+/* =================================
+   CYBERGUARD AI SCAN LOADING
+================================= */
+
+const scanForm =
+    document.getElementById("scanForm");
+
+const startScanButton =
+    document.getElementById("startScanButton");
+
+const scanLoading =
+    document.getElementById("scanLoading");
+
+const loadingBar =
+    document.getElementById("loadingBar");
+
+const loadingPercent =
+    document.getElementById("loadingPercent");
+
+const scanStatus =
+    document.getElementById("scanStatus");
+
+
+if (scanForm) {
+
+    scanForm.addEventListener(
+        "submit",
+        function () {
+
+            /*
+             * Disable the button so the user
+             * cannot accidentally start two scans.
+             */
+
+            startScanButton.disabled = true;
+
+
+            /*
+             * Hide the Start Scan button.
+             */
+
+            startScanButton.style.display =
+                "none";
+
+
+            /*
+             * Show scanning interface.
+             */
+
+            scanLoading.style.display =
+                "block";
+
+
+            /*
+             * Messages displayed during scanning.
+             */
+
+            const messages = [
+
+                "Initializing CyberGuard AI scanner...",
+
+                "Detecting device information...",
+
+                "Checking firewall configuration...",
+
+                "Analyzing operating system...",
+
+                "Checking network services...",
+
+                "Analyzing security findings...",
+
+                "Running AI security analysis...",
+
+                "Preparing security results..."
+
+            ];
+
+
+            let progress = 0;
+
+            let messageIndex = 0;
+
+
+            /*
+             * Update progress while Flask
+             * performs the actual scan.
+             */
+
+            const progressTimer =
+                setInterval(
+                    function () {
+
+                        progress +=
+                            Math.floor(
+                                Math.random() * 7
+                            ) + 3;
+
+
+                        /*
+                         * Keep the visual progress
+                         * below 100 because the
+                         * Flask request is still running.
+                         */
+
+                        if (progress >= 95) {
+
+                            progress = 95;
+
+                        }
+
+
+                        loadingBar.style.width =
+                            progress + "%";
+
+
+                        loadingPercent.textContent =
+                            progress + "%";
+
+
+                        /*
+                         * Change scanning message.
+                         */
+
+                        if (
+                            progress > 10 &&
+                            messageIndex <
+                            messages.length - 1
+                        ) {
+
+                            messageIndex++;
+
+                            scanStatus.textContent =
+                                messages[
+                                    messageIndex
+                                ];
+
+                        }
+
+                    },
+                    600
+                );
+
+        }
+    );
+
+}
+
+</script>
+
+{% endblock %}
+

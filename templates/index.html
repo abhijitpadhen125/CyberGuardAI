@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>CyberGuard AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b1220;
+            color: white;
+        }
+
+        .navbar {
+            height: 70px;
+            background: #111a2e;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-bottom: 1px solid #263451;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        .nav-button {
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 50px 30px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            color: #aab6cc;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .scan-button {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 17px;
+        }
+
+        .scan-button:hover {
+            background: #1d4ed8;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .card {
+            background: #111a2e;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #263451;
+        }
+
+        .card h2 {
+            margin-bottom: 12px;
+            color: #38bdf8;
+        }
+
+        .card p {
+            color: #aab6cc;
+            line-height: 1.6;
+        }
+
+        .status {
+            margin-top: 40px;
+            padding: 20px;
+            background: #111a2e;
+            border-radius: 10px;
+            border: 1px solid #263451;
+            text-align: center;
+        }
+
+        .status span {
+            color: #22c55e;
+            font-weight: bold;
+        }
+
+        @media (max-width: 800px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            🛡️ Cyber<span>Guard AI</span>
+        </div>
+
+        <a href="/test" class="nav-button">
+            System Test
+        </a>
+    </nav>
+
+
+    <div class="container">
+
+        <section class="hero">
+
+            <h1>
+                Secure Your Device with
+                <span>AI</span>
+            </h1>
+
+            <p>
+                CyberGuard AI scans your device, identifies
+                security risks and helps you understand vulnerabilities.
+            </p>
+
+            <a href="/test" class="scan-button">
+                🔍 Start Security Scan
+            </a>
+
+        </section>
+
+
+        <section class="cards">
+
+            <div class="card">
+                <h2>🔍 Device Scanner</h2>
+
+                <p>
+                    Collect basic device information such as
+                    operating system, hostname and system details.
+                </p>
+            </div>
+
+
+            <div class="card">
+                <h2>🛡️ Security Checker</h2>
+
+                <p>
+                    Check important security configurations
+                    and identify potential security issues.
+                </p>
+            </div>
+
+
+            <div class="card">
+                <h2>🤖 AI Analysis</h2>
+
+                <p>
+                    Analyze security findings and provide
+                    understandable recommendations.
+                </p>
+            </div>
+
+        </section>
+
+
+        <div class="status">
+
+            System Status:
+            <span>● Online</span>
+
+            <p style="margin-top: 10px; color: #aab6cc;">
+                CyberGuard AI is ready for security scanning.
+            </p>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

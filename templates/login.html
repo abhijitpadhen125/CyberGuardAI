@@ -1,0 +1,462 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - CyberGuard AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e293b;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        /* LEFT INFORMATION SECTION */
+
+        .info-section {
+            background: linear-gradient(160deg, #0f172a, #1d4ed8);
+            color: white;
+            padding: 50px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .logo span {
+            color: #60a5fa;
+        }
+
+        .info-section h1 {
+            font-size: 34px;
+            margin: 0 0 15px;
+        }
+
+        .info-section > p {
+            color: #dbeafe;
+            line-height: 1.7;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .feature {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+
+        .feature h3 {
+            margin: 0 0 5px;
+            font-size: 16px;
+        }
+
+        .feature p {
+            margin: 0;
+            font-size: 13px;
+            color: #bfdbfe;
+            line-height: 1.5;
+        }
+
+        /* RIGHT LOGIN SECTION */
+
+        .login-section {
+            padding: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-section h2 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #0f172a;
+        }
+
+        .subtitle {
+            margin: 0 0 28px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .message {
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .security-note {
+            margin-top: 2px;
+            margin-bottom: 20px;
+            padding: 12px 14px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            color: #1e40af;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 18px;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .login-container {
+                grid-template-columns: 1fr;
+                max-width: 550px;
+            }
+
+            .info-section {
+                padding: 35px;
+            }
+
+            .info-section h1 {
+                font-size: 28px;
+            }
+
+            .login-section {
+                padding: 35px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            body {
+                align-items: flex-start;
+            }
+
+            .login-container {
+                margin: 15px;
+                border-radius: 12px;
+            }
+
+            .info-section,
+            .login-section {
+                padding: 28px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <!-- LEFT INFORMATION -->
+
+    <div class="info-section">
+
+        <div class="logo">
+            🛡️ CyberGuard <span>AI</span>
+        </div>
+
+        <h1>Welcome Back</h1>
+
+        <p>
+            Securely access your CyberGuard AI dashboard to monitor your
+            device security, review vulnerabilities, analyze risks, and
+            track remediation activities.
+        </p>
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🔍
+            </div>
+
+            <div>
+                <h3>Security Scanning</h3>
+
+                <p>
+                    Perform device security scans and identify potential
+                    security issues.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🤖
+            </div>
+
+            <div>
+                <h3>AI Security Analysis</h3>
+
+                <p>
+                    Understand detected findings with AI-powered security
+                    analysis and recommendations.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🛡️
+            </div>
+
+            <div>
+                <h3>Vulnerability Monitoring</h3>
+
+                <p>
+                    Monitor software vulnerabilities and possible CVE
+                    security issues.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                📊
+            </div>
+
+            <div>
+                <h3>Security Dashboard</h3>
+
+                <p>
+                    View security risk, scan history, alerts, and
+                    remediation progress in one place.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT LOGIN FORM -->
+
+    <div class="login-section">
+
+        <h2>Login to Your Account</h2>
+
+        <p class="subtitle">
+            Enter your credentials to access CyberGuard AI.
+        </p>
+
+
+        {% with messages = get_flashed_messages() %}
+
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <form method="POST">
+
+            {% if csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+            {% endif %}
+
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    required
+                    autocomplete="username"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                    autocomplete="current-password"
+                >
+
+            </div>
+
+
+            <div class="security-note">
+
+                🔒 <strong>Secure Login:</strong>
+                Your credentials are protected using secure password
+                hashing. Always keep your password private.
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-btn"
+            >
+                Login Securely
+            </button>
+
+        </form>
+
+
+        <div class="signup-link">
+
+            Don't have an account?
+
+            <a href="{{ url_for('signup') }}">
+                Create New Account
+            </a>
+
+        </div>
+
+
+        <div class="footer-note">
+
+            CyberGuard AI • Device Security & Vulnerability Monitoring
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

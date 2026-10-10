@@ -1,0 +1,900 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Scan Details - CyberGuard AI{% endblock %}
+
+{% block breadcrumb %}Scan Details{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .scan-details-page {
+        width: 100%;
+    }
+
+    .page-header {
+        background: linear-gradient(135deg, #111827, #1e3a8a);
+        color: white;
+        padding: 28px;
+        border-radius: 18px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    }
+
+    .page-header h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+    }
+
+    .page-header p {
+        margin: 0;
+        color: #dbeafe;
+        line-height: 1.6;
+    }
+
+    .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .action-btn {
+        display: inline-block;
+        padding: 11px 18px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .action-primary {
+        background: white;
+        color: #1e3a8a;
+    }
+
+    .action-secondary {
+        background: rgba(255,255,255,0.15);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .summary-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 15px;
+        padding: 22px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .summary-title {
+        color: #6b7280;
+        font-size: 13px;
+        margin-bottom: 8px;
+    }
+
+    .summary-value {
+        color: #111827;
+        font-size: 25px;
+        font-weight: 700;
+    }
+
+    .risk-critical {
+        color: #991b1b;
+    }
+
+    .risk-high {
+        color: #dc2626;
+    }
+
+    .risk-medium {
+        color: #d97706;
+    }
+
+    .risk-low {
+        color: #16a34a;
+    }
+
+    .risk-info {
+        color: #2563eb;
+    }
+
+    .card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 16px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .card-header h2 {
+        margin: 0;
+        color: #111827;
+        font-size: 21px;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .info-item {
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+    .info-label {
+        color: #6b7280;
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .info-value {
+        color: #111827;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+    .finding {
+        border: 1px solid #e5e7eb;
+        border-radius: 13px;
+        padding: 20px;
+        margin-bottom: 15px;
+        background: #ffffff;
+    }
+
+    .finding:last-child {
+        margin-bottom: 0;
+    }
+
+    .finding-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+
+    .finding-title {
+        margin: 0;
+        color: #111827;
+        font-size: 17px;
+    }
+
+    .severity-badge {
+        display: inline-block;
+        padding: 5px 11px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .severity-critical {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .severity-high {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .severity-medium {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .severity-low {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .severity-informational {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .finding-row {
+        margin-top: 12px;
+    }
+
+    .finding-label {
+        color: #374151;
+        font-weight: 700;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .finding-text {
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .cve-box {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 15px;
+    }
+
+    .cve-title {
+        color: #1e40af;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .ai-result {
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 18px;
+        margin-bottom: 15px;
+    }
+
+    .ai-result:last-child {
+        margin-bottom: 0;
+    }
+
+    .ai-result h3 {
+        margin: 0 0 10px;
+        color: #111827;
+        font-size: 16px;
+    }
+
+    .ai-text {
+        color: #6b7280;
+        line-height: 1.6;
+        font-size: 14px;
+    }
+
+    .empty {
+        text-align: center;
+        padding: 30px;
+        color: #6b7280;
+    }
+
+    .back-link {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    @media (max-width: 1000px) {
+
+        .summary-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+    @media (max-width: 700px) {
+
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .finding-header {
+            flex-direction: column;
+        }
+
+        .page-header h1 {
+            font-size: 23px;
+        }
+
+        .card {
+            padding: 18px;
+        }
+
+    }
+
+</style>
+
+
+<div class="scan-details-page">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <h1>
+            🔍 Security Scan Details
+        </h1>
+
+        <p>
+            Detailed security analysis and vulnerability
+            information for this device scan.
+        </p>
+
+        <div class="actions">
+
+            <!-- FIXED PDF ROUTE -->
+
+            <a
+                href="{{ url_for('report', scan_id=scan['id']) }}"
+                class="action-btn action-primary"
+            >
+                📄 Download PDF Report
+            </a>
+
+            <a
+                href="{{ url_for('history') }}"
+                class="action-btn action-secondary"
+            >
+                📋 Scan History
+            </a>
+
+            <a
+                href="{{ url_for('scan') }}"
+                class="action-btn action-secondary"
+            >
+                🔍 New Scan
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Scan ID
+            </div>
+
+            <div class="summary-value">
+                #{{ scan['id'] }}
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Risk Score
+            </div>
+
+            <div class="summary-value
+                {% if scan['risk_level'] == 'CRITICAL' %}
+                    risk-critical
+                {% elif scan['risk_level'] == 'HIGH' %}
+                    risk-high
+                {% elif scan['risk_level'] == 'MEDIUM' %}
+                    risk-medium
+                {% else %}
+                    risk-low
+                {% endif %}
+            ">
+
+                {{ scan['risk_score']|default(0) }}/100
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Risk Level
+            </div>
+
+            <div class="summary-value
+                {% if scan['risk_level'] == 'CRITICAL' %}
+                    risk-critical
+                {% elif scan['risk_level'] == 'HIGH' %}
+                    risk-high
+                {% elif scan['risk_level'] == 'MEDIUM' %}
+                    risk-medium
+                {% else %}
+                    risk-low
+                {% endif %}
+            ">
+
+                {{ scan['risk_level']|default('LOW') }}
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-title">
+                Security Findings
+            </div>
+
+            <div class="summary-value">
+
+                {% if scan['findings'] %}
+                    {{ scan['findings']|length }}
+                {% else %}
+                    0
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- DEVICE INFORMATION -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                💻 Device Information
+            </h2>
+
+        </div>
+
+
+        <div class="info-grid">
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Hostname
+                </div>
+
+                <div class="info-value">
+                    {{ scan['hostname']|default('Unknown') }}
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Operating System
+                </div>
+
+                <div class="info-value">
+                    {{ scan['operating_system']|default('Unknown') }}
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Scan Date
+                </div>
+
+                <div class="info-value">
+                    {{ scan['scanned_at']|default('Unknown') }}
+                </div>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <div class="info-label">
+                    Scan ID
+                </div>
+
+                <div class="info-value">
+                    {{ scan['id'] }}
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- SECURITY FINDINGS -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                ⚠️ Security Findings
+            </h2>
+
+        </div>
+
+
+        {% if scan['findings'] %}
+
+            {% for finding in scan['findings'] %}
+
+            <div class="finding">
+
+                <div class="finding-header">
+
+                    <h3 class="finding-title">
+
+                        {{ finding.get('title', 'Security Finding') }}
+
+                    </h3>
+
+
+                    <span class="severity-badge
+                        {% if finding.get('severity', 'Informational') == 'Critical' %}
+                            severity-critical
+                        {% elif finding.get('severity') == 'High' %}
+                            severity-high
+                        {% elif finding.get('severity') == 'Medium' %}
+                            severity-medium
+                        {% elif finding.get('severity') == 'Low' %}
+                            severity-low
+                        {% else %}
+                            severity-informational
+                        {% endif %}
+                    ">
+
+                        {{ finding.get('severity', 'Informational') }}
+
+                    </span>
+
+                </div>
+
+
+                {% if finding.get('component') %}
+
+                <div class="finding-row">
+
+                    <div class="finding-label">
+                        Component
+                    </div>
+
+                    <div class="finding-text">
+                        {{ finding.get('component') }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if finding.get('detection') %}
+
+                <div class="finding-row">
+
+                    <div class="finding-label">
+                        Detection
+                    </div>
+
+                    <div class="finding-text">
+                        {{ finding.get('detection') }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if finding.get('description') %}
+
+                <div class="finding-row">
+
+                    <div class="finding-label">
+                        Description
+                    </div>
+
+                    <div class="finding-text">
+                        {{ finding.get('description') }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if finding.get('impact') %}
+
+                <div class="finding-row">
+
+                    <div class="finding-label">
+                        Impact
+                    </div>
+
+                    <div class="finding-text">
+                        {{ finding.get('impact') }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if finding.get('recommendation') %}
+
+                <div class="finding-row">
+
+                    <div class="finding-label">
+                        Recommendation
+                    </div>
+
+                    <div class="finding-text">
+                        {{ finding.get('recommendation') }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if finding.get('cve_id') %}
+
+                <div class="cve-box">
+
+                    <div class="cve-title">
+                        🔎 CVE / NVD Information
+                    </div>
+
+                    <div class="finding-text">
+
+                        <strong>
+                            CVE:
+                        </strong>
+
+                        {{ finding.get('cve_id') }}
+
+                        <br><br>
+
+                        {% if finding.get('cvss_score') %}
+
+                        <strong>
+                            CVSS Score:
+                        </strong>
+
+                        {{ finding.get('cvss_score') }}
+
+                        <br><br>
+
+                        {% endif %}
+
+
+                        {% if finding.get('cvss_severity') %}
+
+                        <strong>
+                            CVSS Severity:
+                        </strong>
+
+                        {{ finding.get('cvss_severity') }}
+
+                        <br><br>
+
+                        {% endif %}
+
+
+                        {% if finding.get('cwe') %}
+
+                        <strong>
+                            CWE:
+                        </strong>
+
+                        {{ finding.get('cwe') }}
+
+                        <br><br>
+
+                        {% endif %}
+
+
+                        {% if finding.get('cve_description') %}
+
+                        <strong>
+                            NVD Description:
+                        </strong>
+
+                        <br>
+
+                        {{ finding.get('cve_description') }}
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+
+                ✅ No security findings were recorded
+                for this scan.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- AI ANALYSIS -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                🤖 AI Security Analysis
+            </h2>
+
+        </div>
+
+
+        {% if scan['ai_results'] %}
+
+            {% for result in scan['ai_results'] %}
+
+            <div class="ai-result">
+
+                <h3>
+
+                    {{ result.get(
+                        'title',
+                        'AI Security Analysis'
+                    ) }}
+
+                </h3>
+
+
+                {% if result.get('severity') %}
+
+                <div style="margin-bottom: 10px;">
+
+                    <span class="severity-badge
+                        {% if result.get('severity') == 'Critical' %}
+                            severity-critical
+                        {% elif result.get('severity') == 'High' %}
+                            severity-high
+                        {% elif result.get('severity') == 'Medium' %}
+                            severity-medium
+                        {% elif result.get('severity') == 'Low' %}
+                            severity-low
+                        {% else %}
+                            severity-informational
+                        {% endif %}
+                    ">
+
+                        {{ result.get('severity') }}
+
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if result.get('analysis') %}
+
+                <div class="finding-row">
+
+                    <div class="finding-label">
+                        Analysis
+                    </div>
+
+                    <div class="ai-text">
+                        {{ result.get('analysis') }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if result.get('recommendation') %}
+
+                <div class="finding-row">
+
+                    <div class="finding-label">
+                        Recommendation
+                    </div>
+
+                    <div class="ai-text">
+                        {{ result.get('recommendation') }}
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty">
+
+                No AI analysis is available for this scan.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- BOTTOM ACTIONS -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Scan Actions
+            </h2>
+
+        </div>
+
+        <div class="actions">
+
+            <a
+                href="{{ url_for('report', scan_id=scan['id']) }}"
+                class="action-btn"
+                style="background:#2563eb;color:white;"
+            >
+                📄 Download PDF Report
+            </a>
+
+            <a
+                href="{{ url_for('history') }}"
+                class="action-btn"
+                style="background:#f3f4f6;color:#111827;"
+            >
+                📋 View Scan History
+            </a>
+
+            <a
+                href="{{ url_for('scan') }}"
+                class="action-btn"
+                style="background:#111827;color:white;"
+            >
+                🔍 Run Another Scan
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

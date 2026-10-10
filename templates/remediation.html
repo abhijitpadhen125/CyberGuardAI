@@ -1,0 +1,535 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    .remediation-page {
+        padding: 10px 0 30px;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .page-header h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #111827;
+    }
+
+    .page-header p {
+        margin: 6px 0 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .back-btn {
+        display: inline-block;
+        padding: 10px 16px;
+        border-radius: 8px;
+        background: #2563eb;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .back-btn:hover {
+        background: #1d4ed8;
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .summary-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
+    }
+
+    .summary-card .label {
+        color: #6b7280;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .summary-card .number {
+        font-size: 30px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .summary-card.open .number {
+        color: #dc2626;
+    }
+
+    .summary-card.progress-card .number {
+        color: #d97706;
+    }
+
+    .summary-card.resolved .number {
+        color: #16a34a;
+    }
+
+    .summary-card.total .number {
+        color: #2563eb;
+    }
+
+    .progress-card-box {
+        background: white;
+        border-radius: 12px;
+        padding: 22px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .progress-header strong {
+        color: #111827;
+        font-size: 15px;
+    }
+
+    .progress-header span {
+        color: #2563eb;
+        font-weight: 700;
+    }
+
+    .progress {
+        width: 100%;
+        height: 12px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: #2563eb;
+        border-radius: 20px;
+        transition: width 0.3s ease;
+    }
+
+    .table-card {
+        background: white;
+        border-radius: 12px;
+        padding: 22px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e5e7eb;
+    }
+
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
+    }
+
+    .table-header h2 {
+        margin: 0;
+        font-size: 20px;
+        color: #111827;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: left;
+        padding: 13px;
+        background: #f8fafc;
+        color: #6b7280;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    td {
+        padding: 14px 13px;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 14px;
+        color: #374151;
+    }
+
+    tr:hover {
+        background: #f9fafb;
+    }
+
+    .severity-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .severity-critical {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .severity-high {
+        background: #ffedd5;
+        color: #9a3412;
+    }
+
+    .severity-medium {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .severity-low {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .severity-informational {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status-open {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .status-in-progress {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .status-resolved {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .view-btn {
+        display: inline-block;
+        padding: 7px 12px;
+        border-radius: 7px;
+        background: #2563eb;
+        color: white;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .view-btn:hover {
+        background: #1d4ed8;
+    }
+
+    .empty {
+        text-align: center;
+        padding: 45px 20px;
+        color: #6b7280;
+    }
+
+    .empty-icon {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    .empty h3 {
+        margin: 0 0 8px;
+        color: #374151;
+    }
+
+    .empty p {
+        margin: 0;
+    }
+
+    @media (max-width: 1000px) {
+        .summary-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 650px) {
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .page-header h1 {
+            font-size: 23px;
+        }
+
+        .table-card {
+            padding: 15px;
+        }
+
+        .progress-card-box {
+            padding: 16px;
+        }
+    }
+</style>
+
+
+<div class="remediation-page">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+
+        <div>
+            <h1>Remediation Management</h1>
+
+            <p>
+                Track, manage and resolve security issues detected by CyberGuard AI.
+            </p>
+        </div>
+
+        <a href="{{ url_for('dashboard') }}" class="back-btn">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- SUMMARY CARDS -->
+    <div class="summary-grid">
+
+        <!-- TOTAL -->
+        <div class="summary-card total">
+
+            <div class="label">
+                Total Issues
+            </div>
+
+            <div class="number">
+                {{ remediation_summary.get('Total', 0) }}
+            </div>
+
+        </div>
+
+
+        <!-- OPEN -->
+        <div class="summary-card open">
+
+            <div class="label">
+                Open
+            </div>
+
+            <div class="number">
+                {{ remediation_summary.get('Open', 0) }}
+            </div>
+
+        </div>
+
+
+        <!-- IN PROGRESS -->
+        <div class="summary-card progress-card">
+
+            <div class="label">
+                In Progress
+            </div>
+
+            <div class="number">
+                {{ remediation_summary.get('In Progress', 0) }}
+            </div>
+
+        </div>
+
+
+        <!-- RESOLVED -->
+        <div class="summary-card resolved">
+
+            <div class="label">
+                Resolved
+            </div>
+
+            <div class="number">
+                {{ remediation_summary.get('Resolved', 0) }}
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROGRESS -->
+    <div class="progress-card-box">
+
+        <div class="progress-header">
+
+            <strong>
+                Remediation Progress
+            </strong>
+
+            <span>
+                {{ remediation_progress|default(0) }}%
+            </span>
+
+        </div>
+
+        <div class="progress">
+
+            <div
+                class="progress-fill"
+                style="width: {{ remediation_progress|default(0) }}%;">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- REMEDIATION TABLE -->
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <h2>
+                Security Issues
+            </h2>
+
+        </div>
+
+
+        {% if remediation_items %}
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Finding</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in remediation_items %}
+
+                    <tr>
+
+                        <td>
+                            #{{ item['id'] }}
+                        </td>
+
+
+                        <td>
+                            {{ item['finding_title'] }}
+                        </td>
+
+
+                        <td>
+
+                            {% set severity = item['severity']|lower|replace(' ', '-') %}
+
+                            <span class="severity-badge severity-{{ severity }}">
+                                {{ item['severity'] }}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            {% set status = item['status']|lower|replace(' ', '-') %}
+
+                            <span class="status-badge status-{{ status }}">
+                                {{ item['status'] }}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            {{ item['created_at'] }}
+                        </td>
+
+
+                        <td>
+                            {{ item['updated_at'] }}
+                        </td>
+
+
+                        <td>
+
+                            <a
+                                href="{{ url_for('remediation_detail', remediation_id=item['id']) }}"
+                                class="view-btn">
+                                View
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                🛡️
+            </div>
+
+            <h3>
+                No Remediation Issues
+            </h3>
+
+            <p>
+                CyberGuard AI has no remediation issues to display.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

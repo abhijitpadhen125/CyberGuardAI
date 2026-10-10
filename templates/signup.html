@@ -1,0 +1,492 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account - CyberGuard AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1e293b;
+        }
+
+        .signup-container {
+            width: 100%;
+            max-width: 1050px;
+            margin: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        /* LEFT INFORMATION SECTION */
+
+        .info-section {
+            background: linear-gradient(160deg, #0f172a, #1d4ed8);
+            color: white;
+            padding: 50px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .logo span {
+            color: #60a5fa;
+        }
+
+        .info-section h1 {
+            font-size: 34px;
+            margin: 0 0 15px;
+        }
+
+        .info-section p {
+            color: #dbeafe;
+            line-height: 1.7;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .feature {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .feature-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            flex-shrink: 0;
+        }
+
+        .feature h3 {
+            margin: 0 0 5px;
+            font-size: 16px;
+        }
+
+        .feature p {
+            margin: 0;
+            font-size: 13px;
+            color: #bfdbfe;
+            line-height: 1.5;
+        }
+
+        /* RIGHT SIGNUP SECTION */
+
+        .signup-section {
+            padding: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .signup-section h2 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            color: #0f172a;
+        }
+
+        .subtitle {
+            margin: 0 0 28px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .message {
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+        }
+
+        .password-info {
+            margin-top: 8px;
+            padding: 12px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .password-info strong {
+            color: #334155;
+        }
+
+        .password-info div {
+            margin: 2px 0;
+        }
+
+        .create-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 5px;
+        }
+
+        .create-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .security-note {
+            margin-top: 20px;
+            padding: 12px 14px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            color: #1e40af;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 18px;
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 800px) {
+
+            .signup-container {
+                grid-template-columns: 1fr;
+                max-width: 550px;
+            }
+
+            .info-section {
+                padding: 35px;
+            }
+
+            .info-section h1 {
+                font-size: 28px;
+            }
+
+            .signup-section {
+                padding: 35px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            body {
+                align-items: flex-start;
+            }
+
+            .signup-container {
+                margin: 15px;
+                border-radius: 12px;
+            }
+
+            .info-section,
+            .signup-section {
+                padding: 28px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="signup-container">
+
+    <!-- LEFT INFORMATION -->
+
+    <div class="info-section">
+
+        <div class="logo">
+            🛡️ CyberGuard <span>AI</span>
+        </div>
+
+        <h1>Protect Your Digital World</h1>
+
+        <p>
+            Create your CyberGuard AI account to monitor device security,
+            identify vulnerabilities, analyze risks, and track security
+            improvements from one dashboard.
+        </p>
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🔍
+            </div>
+
+            <div>
+                <h3>Security Scanning</h3>
+
+                <p>
+                    Scan your device and identify important security findings.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🤖
+            </div>
+
+            <div>
+                <h3>AI Security Analysis</h3>
+
+                <p>
+                    Get understandable analysis and recommendations for
+                    detected security issues.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🛡️
+            </div>
+
+            <div>
+                <h3>Vulnerability Monitoring</h3>
+
+                <p>
+                    Check installed software for possible CVE vulnerabilities
+                    using security database information.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                📊
+            </div>
+
+            <div>
+                <h3>Security Dashboard</h3>
+
+                <p>
+                    Track risk levels, scan history, alerts, and remediation
+                    progress in one place.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT SIGNUP FORM -->
+
+    <div class="signup-section">
+
+        <h2>Create New Account</h2>
+
+        <p class="subtitle">
+            Create your secure CyberGuard AI account to get started.
+        </p>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+
+                {% for message in messages %}
+
+                    <div class="message">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+        {% endwith %}
+
+
+        <form method="POST">
+
+            {% if csrf_token %}
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+            {% endif %}
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    minlength="3"
+                    maxlength="30"
+                    required
+                    autocomplete="username"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a strong password"
+                    minlength="8"
+                    required
+                    autocomplete="new-password"
+                >
+
+                <div class="password-info">
+
+                    <strong>Password requirements:</strong>
+
+                    <div>✓ At least 8 characters</div>
+
+                    <div>✓ At least one uppercase letter (A-Z)</div>
+
+                    <div>✓ At least one lowercase letter (a-z)</div>
+
+                    <div>✓ At least one number (0-9)</div>
+
+                    <div>✓ At least one special character (!@#$%)</div>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-note">
+
+                🔒 <strong>Security & Privacy:</strong>
+                Your password is securely stored using password hashing.
+                Never share your password with anyone.
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="create-btn"
+            >
+                Create Account
+            </button>
+
+        </form>
+
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="{{ url_for('login') }}">
+                Login here
+            </a>
+
+        </div>
+
+        <div class="footer-note">
+
+            CyberGuard AI • Device Security & Vulnerability Monitoring
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

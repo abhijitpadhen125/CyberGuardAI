@@ -1,0 +1,1292 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        CyberGuard AI
+        {% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    {% block head %}
+    {% endblock %}
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        a {
+            text-decoration: none !important;
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .sidebar {
+            position: fixed;
+
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 245px;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #0b1220 0%,
+                    #0f172a 100%
+                );
+
+            color: white;
+
+            padding: 20px 16px;
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            z-index: 1000;
+
+            border-right:
+                1px solid rgba(148, 163, 184, 0.10);
+
+            box-shadow:
+                8px 0 30px rgba(15, 23, 42, 0.08);
+
+            transition:
+                transform 0.28s ease;
+        }
+
+
+        /* =====================================================
+           SIDEBAR CLOSE
+        ===================================================== */
+
+        .sidebar-close {
+            position: absolute;
+
+            top: 14px;
+            right: 12px;
+
+            width: 31px;
+            height: 31px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #334155;
+
+            background: #172033;
+
+            color: #cbd5e1;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 18px;
+
+            line-height: 1;
+
+            transition: 0.2s ease;
+        }
+
+        .sidebar-close:hover {
+            background: #2563eb;
+
+            color: white;
+
+            border-color: #2563eb;
+        }
+
+
+        /* =====================================================
+           BRAND
+        ===================================================== */
+
+        .sidebar-brand {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding:
+                10px 45px 18px 8px;
+
+            margin-bottom: 14px;
+
+            border-bottom:
+                1px solid rgba(148, 163, 184, 0.10);
+        }
+
+        .brand-icon {
+            width: 43px;
+            height: 43px;
+
+            min-width: 43px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            border-radius: 12px;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 8px 20px
+                rgba(37, 99, 235, 0.25);
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-name {
+            color: #f8fafc;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+        }
+
+        .brand-subtitle {
+            color: #64748b;
+
+            font-size: 9px;
+
+            margin-top: 2px;
+
+            letter-spacing: 1.8px;
+
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           USER
+        ===================================================== */
+
+        .user-box {
+            padding: 14px;
+
+            margin-bottom: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #182338,
+                    #172033
+                );
+
+            border:
+                1px solid rgba(148, 163, 184, 0.12);
+
+            border-radius: 12px;
+        }
+
+        .user-label {
+            color: #64748b;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 6px;
+        }
+
+        .user-name {
+            display: block;
+
+            color: #f8fafc;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            word-break: break-word;
+        }
+
+        .protected-session {
+            color: #94a3b8;
+
+            font-size: 10px;
+
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .nav-title {
+            margin: 19px 10px 8px;
+
+            color: #64748b;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.7px;
+
+            text-transform: uppercase;
+        }
+
+        .nav-link {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            width: 100%;
+
+            padding: 11px 12px;
+
+            margin-bottom: 4px;
+
+            border-radius: 9px;
+
+            background: transparent;
+
+            color: #cbd5e1;
+
+            font-size: 13px;
+
+            font-weight: 500;
+
+            /*
+               IMPORTANT:
+               Removes the unwanted underline.
+            */
+
+            text-decoration: none !important;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
+        }
+
+        .nav-link:visited {
+            color: #cbd5e1;
+
+            text-decoration: none !important;
+        }
+
+        .nav-link:hover {
+            background: #1e293b;
+
+            color: white;
+
+            text-decoration: none !important;
+
+            transform: translateX(2px);
+        }
+
+        .nav-link.active {
+            background:
+                linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #1d4ed8
+                );
+
+            color: white;
+
+            text-decoration: none !important;
+
+            box-shadow:
+                0 7px 18px
+                rgba(37, 99, 235, 0.25);
+        }
+
+        .nav-link.active:hover {
+            transform: none;
+
+            color: white;
+
+            text-decoration: none !important;
+        }
+
+        .nav-icon {
+            width: 20px;
+
+            min-width: 20px;
+
+            text-align: center;
+
+            font-size: 10px;
+        }
+
+        .nav-text {
+            flex: 1;
+
+            white-space: nowrap;
+        }
+
+
+        /* =====================================================
+           ALERT COUNT
+        ===================================================== */
+
+        .alert-count {
+            min-width: 19px;
+
+            height: 19px;
+
+            padding: 0 5px;
+
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #dc2626;
+
+            color: white;
+
+            border-radius: 20px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+        }
+
+
+        /* =====================================================
+           LOGOUT
+        ===================================================== */
+
+        .logout-form {
+            margin-top: 22px;
+        }
+
+        .logout-button {
+            width: 100%;
+
+            padding: 11px 12px;
+
+            border:
+                1px solid rgba(
+                    248,
+                    113,
+                    113,
+                    0.12
+                );
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #321827,
+                    #3b1727
+                );
+
+            color: #fca5a5;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: left;
+
+            transition: 0.2s ease;
+        }
+
+        .logout-button:hover {
+            background: #4c1d2e;
+
+            color: white;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .main {
+            margin-left: 245px;
+
+            min-height: 100vh;
+
+            transition:
+                margin-left 0.28s ease;
+        }
+
+
+        /* =====================================================
+           TOPBAR
+        ===================================================== */
+
+        .topbar {
+            height: 70px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 30px;
+
+            background: white;
+
+            border-bottom:
+                1px solid #e5e7eb;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 900;
+        }
+
+        .topbar-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+        }
+
+        .menu-button {
+            width: 42px;
+
+            height: 38px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: white;
+
+            border:
+                1px solid #dbe3ef;
+
+            border-radius: 9px;
+
+            color: #334155;
+
+            cursor: pointer;
+
+            font-size: 18px;
+
+            transition: 0.2s ease;
+        }
+
+        .menu-button:hover {
+            background: #eff6ff;
+
+            border-color: #2563eb;
+
+            color: #2563eb;
+        }
+
+        .breadcrumb {
+            color: #475569;
+
+            font-size: 13px;
+
+            font-weight: 500;
+        }
+
+
+        /* =====================================================
+           PROTECTED SYSTEM
+        ===================================================== */
+
+        .topbar-right {
+            text-align: right;
+        }
+
+        .secure-title {
+            color: #15803d;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+        .secure-title::before {
+            content: "●";
+
+            margin-right: 6px;
+
+            color: #22c55e;
+
+            font-size: 8px;
+        }
+
+        .secure-user {
+            color: #64748b;
+
+            font-size: 9px;
+
+            margin-top: 3px;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
+            padding: 30px;
+
+            max-width: 1600px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            padding:
+                10px 30px 22px;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           SIDEBAR CLOSED
+        ===================================================== */
+
+        body.sidebar-closed .sidebar {
+            transform: translateX(-100%);
+        }
+
+        body.sidebar-closed .main {
+            margin-left: 0 !important;
+        }
+
+
+        /* =====================================================
+           OVERLAY
+        ===================================================== */
+
+        .sidebar-overlay {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(
+                    15,
+                    23,
+                    42,
+                    0.50
+                );
+
+            z-index: 950;
+        }
+
+
+        /* =====================================================
+           DESKTOP
+        ===================================================== */
+
+        @media (min-width: 651px) {
+
+            .sidebar-overlay {
+                display: none !important;
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 650px) {
+
+            .sidebar {
+                width: 270px;
+
+                transform:
+                    translateX(-100%);
+            }
+
+            body.sidebar-mobile-open
+            .sidebar {
+                transform:
+                    translateX(0);
+            }
+
+            body.sidebar-closed
+            .sidebar {
+                transform:
+                    translateX(-100%);
+            }
+
+            .main {
+                margin-left: 0 !important;
+
+                width: 100%;
+            }
+
+            body.sidebar-mobile-open
+            .sidebar-overlay {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 15px;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .topbar-right {
+                display: none;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ===================================================== */
+
+        @media (max-width: 450px) {
+
+            .sidebar {
+                width: 260px;
+            }
+
+            .content {
+                padding: 14px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body class="sidebar-closed">
+
+
+    <!-- =====================================================
+         SIDEBAR OVERLAY
+    ===================================================== -->
+
+    <div
+        class="sidebar-overlay"
+        id="sidebarOverlay"
+    ></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
+
+        <button
+            type="button"
+            class="sidebar-close"
+            id="sidebarClose"
+        >
+            ×
+        </button>
+
+
+        <!-- BRAND -->
+
+        <div class="sidebar-brand">
+
+            <div class="brand-icon">
+                CG
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    CyberGuard AI
+                </div>
+
+                <div class="brand-subtitle">
+                    AI SECURITY
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- USER -->
+
+        <div class="user-box">
+
+            <div class="user-label">
+                USER
+            </div>
+
+            <div class="user-name">
+                {{ session.get('username', 'User') }}
+            </div>
+
+            <div class="protected-session">
+                Protected Session
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav>
+
+
+            <div class="nav-title">
+                MAIN
+            </div>
+
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="nav-link
+                {% if request.endpoint == 'dashboard' %}
+                active
+                {% endif %}"
+            >
+
+                <span class="nav-icon">
+                    [D]
+                </span>
+
+                <span class="nav-text">
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('scan') }}"
+                class="nav-link
+                {% if request.endpoint == 'scan' %}
+                active
+                {% endif %}"
+            >
+
+                <span class="nav-icon">
+                    [S]
+                </span>
+
+                <span class="nav-text">
+                    Security Scan
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('history') }}"
+                class="nav-link
+                {% if request.endpoint == 'history'
+                or request.endpoint == 'scan_details' %}
+                active
+                {% endif %}"
+            >
+
+                <span class="nav-icon">
+                    [H]
+                </span>
+
+                <span class="nav-text">
+                    Scan History
+                </span>
+
+            </a>
+
+
+            <div class="nav-title">
+                SECURITY
+            </div>
+
+
+            <a
+                href="{{ url_for('remediation') }}"
+                class="nav-link
+                {% if request.endpoint == 'remediation'
+                or request.endpoint == 'remediation_detail'
+                or request.endpoint == 'update_remediation' %}
+                active
+                {% endif %}"
+            >
+
+                <span class="nav-icon">
+                    [R]
+                </span>
+
+                <span class="nav-text">
+                    Remediation
+                </span>
+
+            </a>
+
+
+            <a
+                href="{{ url_for('alerts') }}"
+                class="nav-link
+                {% if request.endpoint == 'alerts'
+                or request.endpoint == 'alert_detail'
+                or request.endpoint == 'mark_alert_read'
+                or request.endpoint == 'mark_alert_as_read' %}
+                active
+                {% endif %}"
+            >
+
+                <span class="nav-icon">
+                    [A]
+                </span>
+
+                <span class="nav-text">
+                    Security Alerts
+                </span>
+
+                {% if unread_alert_count is defined
+                and unread_alert_count > 0 %}
+
+                    <span class="alert-count">
+                        {{ unread_alert_count }}
+                    </span>
+
+                {% endif %}
+
+            </a>
+
+
+            <div class="nav-title">
+                SYSTEM
+            </div>
+
+
+            <a
+                href="{{ url_for('security_overview') }}"
+                class="nav-link
+                {% if request.endpoint == 'security_overview' %}
+                active
+                {% endif %}"
+            >
+
+                <span class="nav-icon">
+                    [O]
+                </span>
+
+                <span class="nav-text">
+                    Security Overview
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- LOGOUT -->
+
+        <form
+            method="POST"
+            action="{{ url_for('logout') }}"
+            class="logout-form"
+        >
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+            >
+
+            <button
+                type="submit"
+                class="logout-button"
+            >
+                Logout
+            </button>
+
+        </form>
+
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
+
+    <main class="main">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <button
+                    type="button"
+                    class="menu-button"
+                    id="menuButton"
+                >
+                    ☰
+                </button>
+
+                <div class="breadcrumb">
+
+                    CyberGuard AI /
+
+                    {% block breadcrumb %}
+                    Dashboard
+                    {% endblock %}
+
+                </div>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="secure-title">
+                    Protected System
+                </div>
+
+                <div class="secure-user">
+                    {{ session.get('username', '') }}
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            {% with messages =
+                get_flashed_messages(
+                    with_categories=true
+                )
+            %}
+
+                {% if messages %}
+
+                    {% for category, message in messages %}
+
+                        <div class="flash-message">
+
+                            {{ message }}
+
+                        </div>
+
+                    {% endfor %}
+
+                {% endif %}
+
+            {% endwith %}
+
+
+            {% block content %}
+            {% endblock %}
+
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <footer class="footer">
+
+            Copyright 2026 CyberGuard AI
+
+            <br>
+
+            AI-Powered Cybersecurity Platform
+
+        </footer>
+
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ===================================================== -->
+
+    <script>
+
+        const menuButton =
+            document.getElementById(
+                "menuButton"
+            );
+
+        const sidebarClose =
+            document.getElementById(
+                "sidebarClose"
+            );
+
+        const sidebarOverlay =
+            document.getElementById(
+                "sidebarOverlay"
+            );
+
+
+        /* =================================================
+           OPEN
+        ================================================= */
+
+        function openSidebar() {
+
+            document.body.classList.remove(
+                "sidebar-closed"
+            );
+
+            if (
+                window.innerWidth <= 650
+            ) {
+
+                document.body.classList.add(
+                    "sidebar-mobile-open"
+                );
+
+            }
+
+            if (menuButton) {
+
+                menuButton.innerHTML = "✕";
+
+            }
+
+        }
+
+
+        /* =================================================
+           CLOSE
+        ================================================= */
+
+        function closeSidebar() {
+
+            document.body.classList.add(
+                "sidebar-closed"
+            );
+
+            document.body.classList.remove(
+                "sidebar-mobile-open"
+            );
+
+            if (menuButton) {
+
+                menuButton.innerHTML = "☰";
+
+            }
+
+        }
+
+
+        /* =================================================
+           TOGGLE
+        ================================================= */
+
+        if (menuButton) {
+
+            menuButton.addEventListener(
+                "click",
+                function () {
+
+                    if (
+                        document.body.classList.contains(
+                            "sidebar-closed"
+                        )
+                    ) {
+
+                        openSidebar();
+
+                    } else {
+
+                        closeSidebar();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           CLOSE BUTTON
+        ================================================= */
+
+        if (sidebarClose) {
+
+            sidebarClose.addEventListener(
+                "click",
+                function () {
+
+                    closeSidebar();
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           OVERLAY
+        ================================================= */
+
+        if (sidebarOverlay) {
+
+            sidebarOverlay.addEventListener(
+                "click",
+                function () {
+
+                    closeSidebar();
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           ESCAPE
+        ================================================= */
+
+        document.addEventListener(
+            "keydown",
+            function (event) {
+
+                if (
+                    event.key === "Escape"
+                ) {
+
+                    closeSidebar();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           MOBILE NAVIGATION
+        ================================================= */
+
+        document
+            .querySelectorAll(
+                ".nav-link"
+            )
+            .forEach(
+                function (link) {
+
+                    link.addEventListener(
+                        "click",
+                        function () {
+
+                            if (
+                                window.innerWidth <= 650
+                            ) {
+
+                                closeSidebar();
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+        /* =================================================
+           RESIZE
+        ================================================= */
+
+        window.addEventListener(
+            "resize",
+            function () {
+
+                if (
+                    window.innerWidth > 650
+                ) {
+
+                    document.body.classList.remove(
+                        "sidebar-mobile-open"
+                    );
+
+                }
+
+            }
+        );
+
+    </script>
+
+
+    {% block scripts %}
+    {% endblock %}
+
+
+</body>
+
+</html>

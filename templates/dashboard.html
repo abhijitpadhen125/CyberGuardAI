@@ -1,0 +1,1216 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Dashboard - CyberGuard AI{% endblock %}
+{% block breadcrumb %}Dashboard{% endblock %}
+
+{% block content %}
+
+<style>
+    .dashboard {
+        width: 100%;
+    }
+
+    .welcome {
+        background: linear-gradient(135deg, #111827, #1e3a8a);
+        color: white;
+        border-radius: 18px;
+        padding: 28px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    }
+
+    .welcome h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+    }
+
+    .welcome p {
+        margin: 0;
+        color: #dbeafe;
+    }
+
+    .dashboard-actions {
+        margin-top: 20px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .dashboard-btn {
+        display: inline-block;
+        padding: 11px 18px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-weight: 600;
+        background: white;
+        color: #1e3a8a;
+    }
+
+    .dashboard-btn.dark {
+        background: #2563eb;
+        color: white;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 15px;
+        padding: 22px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .stat-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .stat-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 21px;
+        background: #eff6ff;
+    }
+
+    .stat-title {
+        color: #6b7280;
+        font-size: 14px;
+        margin-top: 15px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+        font-weight: 700;
+        color: #111827;
+        margin-top: 5px;
+    }
+
+    .main-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .card {
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 15px;
+        padding: 22px;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .card-header h2 {
+        font-size: 19px;
+        margin: 0;
+        color: #111827;
+    }
+
+    .card-header a {
+        color: #2563eb;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    /* RISK BOX */
+
+    .risk-box {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 12px;
+    }
+
+    .risk-circle {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: #2563eb;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .risk-circle strong {
+        font-size: 32px;
+    }
+
+    .risk-circle span {
+        font-size: 12px;
+    }
+
+    .risk-info {
+        flex: 1;
+    }
+
+    .risk-info h3 {
+        margin: 0 0 8px;
+        font-size: 20px;
+    }
+
+    .risk-info p {
+        color: #6b7280;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* SECURITY SCORE */
+
+    .security-score-box {
+        flex: 1;
+        padding: 18px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        min-width: 180px;
+    }
+
+    .security-score-title {
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .security-score-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: #2563eb;
+        margin-bottom: 12px;
+    }
+
+    .security-score-value span {
+        font-size: 16px;
+        color: #6b7280;
+    }
+
+    .security-score-bar {
+        width: 100%;
+        height: 10px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .security-score-fill {
+        height: 100%;
+        border-radius: 20px;
+    }
+
+    .score-good {
+        background: #16a34a;
+    }
+
+    .score-warning {
+        background: #d97706;
+    }
+
+    .score-danger {
+        background: #dc2626;
+    }
+
+    .security-score-message {
+        margin: 10px 0 0;
+        color: #6b7280;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    /* SEVERITY */
+
+    .severity-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .severity-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .severity-name {
+        width: 85px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .severity-bar {
+        flex: 1;
+        height: 9px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .severity-fill {
+        height: 100%;
+        border-radius: 20px;
+    }
+
+    .critical {
+        background: #dc2626;
+    }
+
+    .high {
+        background: #ea580c;
+    }
+
+    .medium {
+        background: #d97706;
+    }
+
+    .low {
+        background: #16a34a;
+    }
+
+    .info {
+        background: #2563eb;
+    }
+
+    .severity-number {
+        width: 25px;
+        text-align: right;
+        font-weight: 700;
+    }
+
+    /* REMEDIATION */
+
+    .remediation-box {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .remediation-item {
+        padding: 16px;
+        border-radius: 11px;
+        background: #f8fafc;
+        text-align: center;
+    }
+
+    .remediation-item strong {
+        display: block;
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+
+    .remediation-item span {
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .progress-container {
+        margin-top: 15px;
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .progress {
+        width: 100%;
+        height: 10px;
+        background: #e5e7eb;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: #2563eb;
+        border-radius: 20px;
+    }
+
+    /* TABLE */
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: left;
+        padding: 13px;
+        background: #f8fafc;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    td {
+        padding: 14px 13px;
+        border-bottom: 1px solid #e5e7eb;
+        font-size: 14px;
+    }
+
+    .risk-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .risk-high {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .risk-medium {
+        background: #fef3c7;
+        color: #92400e;
+    }
+
+    .risk-low {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .risk-info-badge {
+        background: #dbeafe;
+        color: #1e40af;
+    }
+
+    .view-link {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    .empty {
+        text-align: center;
+        padding: 35px;
+        color: #6b7280;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 1000px) {
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .main-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 750px) {
+
+        .risk-box {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .risk-circle {
+            margin: auto;
+        }
+
+        .security-score-box {
+            width: auto;
+        }
+    }
+
+    @media (max-width: 650px) {
+
+        .stats-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .remediation-box {
+            grid-template-columns: 1fr;
+        }
+
+        .welcome h1 {
+            font-size: 23px;
+        }
+    }
+</style>
+
+
+<div class="dashboard">
+
+    <!-- WELCOME -->
+
+    <div class="welcome">
+
+        <h1>
+            Welcome to CyberGuard AI 
+        </h1>
+
+        <p>
+            Monitor your device security, analyze vulnerabilities,
+            and track remediation from one dashboard.
+        </p>
+
+        <div class="dashboard-actions">
+
+            <a
+                href="{{ url_for('scan') }}"
+                class="dashboard-btn dark"
+            >
+                 Start New Scan
+            </a>
+
+            <a
+                href="{{ url_for('history') }}"
+                class="dashboard-btn"
+            >
+                 View Scan History
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- STAT CARDS -->
+
+    <div class="stats-grid">
+
+        <!-- TOTAL SCANS -->
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div>
+
+                    <div class="stat-title">
+                        Total Scans
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_scans|default(0) }}
+                    </div>
+
+                </div>
+
+                <div class="stat-icon">
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FINDINGS -->
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div>
+
+                    <div class="stat-title">
+                        Security Findings
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_findings|default(0) }}
+                    </div>
+
+                </div>
+
+                <div class="stat-icon">
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- OPEN ISSUES -->
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div>
+
+                    <div class="stat-title">
+                        Open Issues
+                    </div>
+
+                    <div class="stat-value">
+                        {{ remediation_summary['Open']|default(0) }}
+                    </div>
+
+                </div>
+
+                <div class="stat-icon">
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ALERTS -->
+
+        <div class="stat-card">
+
+            <div class="stat-top">
+
+                <div>
+
+                    <div class="stat-title">
+                        Unread Alerts
+                    </div>
+
+                    <div class="stat-value">
+                        {{ unread_alert_count|default(0) }}
+                    </div>
+
+                </div>
+
+                <div class="stat-icon">
+                    
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RISK + SEVERITY -->
+
+    <div class="main-grid">
+
+        <!-- RISK OVERVIEW -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Risk Overview
+                </h2>
+
+                {% if latest_scan %}
+
+                    <a
+                        href="{{ url_for('scan_details', scan_id=latest_scan['id']) }}"
+                    >
+                        View Latest Scan
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if latest_scan %}
+
+                {% set risk_score = latest_scan['risk_score']|default(0)|int %}
+
+                {% set security_score = 100 - risk_score %}
+
+                {% if security_score >= 80 %}
+
+                    {% set score_class = "score-good" %}
+                    {% set score_message = "Your device has a good security score." %}
+
+                {% elif security_score >= 60 %}
+
+                    {% set score_class = "score-warning" %}
+                    {% set score_message = "Some security improvements are recommended." %}
+
+                {% else %}
+
+                    {% set score_class = "score-danger" %}
+                    {% set score_message = "Your device requires security attention." %}
+
+                {% endif %}
+
+
+                <div class="risk-box">
+
+                    <!-- RISK SCORE -->
+
+                    <div class="risk-circle">
+
+                        <strong>
+                            {{ risk_score }}
+                        </strong>
+
+                        <span>
+                            Risk Score
+                        </span>
+
+                    </div>
+
+
+                    <!-- SECURITY SCORE -->
+
+                    <div class="security-score-box">
+
+                        <div class="security-score-title">
+                            Security Score
+                        </div>
+
+                        <div class="security-score-value">
+                            {{ security_score }}
+                            <span>/100</span>
+                        </div>
+
+                        <div class="security-score-bar">
+
+                            <div
+                                class="security-score-fill {{ score_class }}"
+                                style="width: {{ security_score }}%;"
+                            ></div>
+
+                        </div>
+
+                        <p class="security-score-message">
+                            {{ score_message }}
+                        </p>
+
+                    </div>
+
+
+                    <!-- RISK INFORMATION -->
+
+                    <div class="risk-info">
+
+                        <h3>
+                            {{ latest_scan['risk_level'] }}
+                        </h3>
+
+                        <p>
+
+                            Latest scan was performed on
+
+                            <strong>
+                                {{ latest_scan['scanned_at'] }}
+                            </strong>
+
+                            for device
+
+                            <strong>
+                                {{ latest_scan['hostname'] }}
+                            </strong>.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            {% else %}
+
+                <div class="empty">
+
+                    <p>
+                        No scans available yet.
+                    </p>
+
+                    <br>
+
+                    <a
+                        href="{{ url_for('scan') }}"
+                        class="dashboard-btn dark"
+                    >
+                        Start Your First Scan
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- SEVERITY -->
+
+        <div class="card">
+
+            <div class="card-header">
+
+                <h2>
+                    Finding Severity
+                </h2>
+
+            </div>
+
+
+            <div class="severity-list">
+
+                <!-- CRITICAL -->
+
+                <div class="severity-row">
+
+                    <span class="severity-name">
+                        Critical
+                    </span>
+
+                    <div class="severity-bar">
+
+                        <div
+                            class="severity-fill critical"
+                            style="width:
+                            {% if total_findings|default(0) > 0 %}
+                                {{ (severity_counts['Critical']|default(0) / total_findings * 100)|round|int }}
+                            {% else %}
+                                0
+                            {% endif %}%;">
+                        </div>
+
+                    </div>
+
+                    <span class="severity-number">
+                        {{ severity_counts['Critical']|default(0) }}
+                    </span>
+
+                </div>
+
+
+                <!-- HIGH -->
+
+                <div class="severity-row">
+
+                    <span class="severity-name">
+                        High
+                    </span>
+
+                    <div class="severity-bar">
+
+                        <div
+                            class="severity-fill high"
+                            style="width:
+                            {% if total_findings|default(0) > 0 %}
+                                {{ (severity_counts['High']|default(0) / total_findings * 100)|round|int }}
+                            {% else %}
+                                0
+                            {% endif %}%;">
+                        </div>
+
+                    </div>
+
+                    <span class="severity-number">
+                        {{ severity_counts['High']|default(0) }}
+                    </span>
+
+                </div>
+
+
+                <!-- MEDIUM -->
+
+                <div class="severity-row">
+
+                    <span class="severity-name">
+                        Medium
+                    </span>
+
+                    <div class="severity-bar">
+
+                        <div
+                            class="severity-fill medium"
+                            style="width:
+                            {% if total_findings|default(0) > 0 %}
+                                {{ (severity_counts['Medium']|default(0) / total_findings * 100)|round|int }}
+                            {% else %}
+                                0
+                            {% endif %}%;">
+                        </div>
+
+                    </div>
+
+                    <span class="severity-number">
+                        {{ severity_counts['Medium']|default(0) }}
+                    </span>
+
+                </div>
+
+
+                <!-- LOW -->
+
+                <div class="severity-row">
+
+                    <span class="severity-name">
+                        Low
+                    </span>
+
+                    <div class="severity-bar">
+
+                        <div
+                            class="severity-fill low"
+                            style="width:
+                            {% if total_findings|default(0) > 0 %}
+                                {{ (severity_counts['Low']|default(0) / total_findings * 100)|round|int }}
+                            {% else %}
+                                0
+                            {% endif %}%;">
+                        </div>
+
+                    </div>
+
+                    <span class="severity-number">
+                        {{ severity_counts['Low']|default(0) }}
+                    </span>
+
+                </div>
+
+
+                <!-- INFORMATIONAL -->
+
+                <div class="severity-row">
+
+                    <span class="severity-name">
+                        Info
+                    </span>
+
+                    <div class="severity-bar">
+
+                        <div
+                            class="severity-fill info"
+                            style="width:
+                            {% if total_findings|default(0) > 0 %}
+                                {{ (severity_counts['Informational']|default(0) / total_findings * 100)|round|int }}
+                            {% else %}
+                                0
+                            {% endif %}%;">
+                        </div>
+
+                    </div>
+
+                    <span class="severity-number">
+                        {{ severity_counts['Informational']|default(0) }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- REMEDIATION -->
+
+    <div
+        class="card"
+        style="margin-bottom:25px;"
+    >
+
+        <div class="card-header">
+
+            <h2>
+                Remediation Overview
+            </h2>
+
+            <a
+                href="{{ url_for('remediation') }}"
+            >
+                Manage Issues 
+            </a>
+
+        </div>
+
+
+        <div class="remediation-box">
+
+            <!-- OPEN -->
+
+            <div class="remediation-item">
+
+                <strong>
+                    {{ remediation_summary['Open']|default(0) }}
+                </strong>
+
+                <span>
+                    Open
+                </span>
+
+            </div>
+
+
+            <!-- IN PROGRESS -->
+
+            <div class="remediation-item">
+
+                <strong>
+                    {{ remediation_summary['In Progress']|default(0) }}
+                </strong>
+
+                <span>
+                    In Progress
+                </span>
+
+            </div>
+
+
+            <!-- RESOLVED -->
+
+            <div class="remediation-item">
+
+                <strong>
+                    {{ remediation_summary['Resolved']|default(0) }}
+                </strong>
+
+                <span>
+                    Resolved
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress-container">
+
+            <div class="progress-header">
+
+                <span>
+                    Remediation Progress
+                </span>
+
+                <span>
+                    {{ remediation_progress|default(0) }}%
+                </span>
+
+            </div>
+
+
+            <div class="progress">
+
+                <div
+                    class="progress-fill"
+                    style="width: {{ remediation_progress|default(0) }}%;"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT SCANS -->
+
+    <div class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Recent Security Scans
+            </h2>
+
+            <a
+                href="{{ url_for('history') }}"
+            >
+                View All 
+            </a>
+
+        </div>
+
+
+        {% if recent_scans %}
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Scan ID
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Device
+                            </th>
+
+                            <th>
+                                Risk Score
+                            </th>
+
+                            <th>
+                                Risk Level
+                            </th>
+
+                            <th>
+                                Security Score
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for scan in recent_scans %}
+
+                            {% set scan_risk = scan['risk_score']|default(0)|int %}
+                            {% set scan_security = 100 - scan_risk %}
+
+                            <tr>
+
+                                <td>
+                                    #{{ scan['id'] }}
+                                </td>
+
+                                <td>
+                                    {{ scan['scanned_at'] }}
+                                </td>
+
+                                <td>
+                                    {{ scan['hostname'] }}
+                                </td>
+
+                                <td>
+
+                                    <strong>
+                                        {{ scan_risk }}
+                                    </strong>
+
+                                </td>
+
+
+                                <td>
+
+                                    {% set level = scan['risk_level']|default('Informational') %}
+
+                                    {% if level == 'Critical' or level == 'High' %}
+
+                                        <span class="risk-badge risk-high">
+                                            {{ level }}
+                                        </span>
+
+                                    {% elif level == 'Medium' %}
+
+                                        <span class="risk-badge risk-medium">
+                                            {{ level }}
+                                        </span>
+
+                                    {% elif level == 'Low' %}
+
+                                        <span class="risk-badge risk-low">
+                                            {{ level }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="risk-badge risk-info-badge">
+                                            {{ level }}
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <td>
+
+                                    <strong>
+                                        {{ scan_security }}/100
+                                    </strong>
+
+                                </td>
+
+
+                                <td>
+
+                                    <a
+                                        class="view-link"
+                                        href="{{ url_for('scan_details', scan_id=scan['id']) }}"
+                                    >
+                                        View
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        {% else %}
+
+            <div class="empty">
+
+                <p>
+                    No security scans have been performed yet.
+                </p>
+
+                <br>
+
+                <a
+                    href="{{ url_for('scan') }}"
+                    class="dashboard-btn dark"
+                >
+                     Start Security Scan
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,652 @@
+﻿{% extends "base.html" %}
+
+{% block title %}
+CyberGuard AI - Scan History
+{% endblock %}
+
+{% block breadcrumb %}
+Scan History
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .history-hero {
+        background: linear-gradient(
+            135deg,
+            #111827,
+            #1e3a8a
+        );
+
+        color: white;
+
+        padding: 30px;
+
+        border-radius: 18px;
+
+        margin-bottom: 24px;
+    }
+
+    .history-hero h1 {
+        margin: 0 0 8px 0;
+
+        font-size: 30px;
+
+        font-weight: 700;
+    }
+
+    .history-hero p {
+        margin: 0 0 22px 0;
+
+        color: #dbeafe;
+
+        font-size: 14px;
+    }
+
+    .history-actions {
+        display: flex;
+
+        gap: 10px;
+
+        flex-wrap: wrap;
+    }
+
+    .history-button {
+        display: inline-block;
+
+        padding: 11px 18px;
+
+        border-radius: 8px;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        border: none;
+
+        cursor: pointer;
+    }
+
+    .history-button-primary {
+        background: #2563eb;
+
+        color: white;
+    }
+
+    .history-button-primary:hover {
+        background: #1d4ed8;
+    }
+
+    .history-button-light {
+        background: white;
+
+        color: #1e3a8a;
+    }
+
+    .history-button-light:hover {
+        background: #eff6ff;
+    }
+
+
+    .history-card {
+        background: white;
+
+        border: 1px solid #e2e8f0;
+
+        border-radius: 16px;
+
+        padding: 22px;
+
+        box-shadow:
+            0 4px 15px rgba(
+                15,
+                23,
+                42,
+                0.05
+            );
+    }
+
+
+    .history-card-header {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        gap: 20px;
+
+        margin-bottom: 20px;
+
+        flex-wrap: wrap;
+    }
+
+    .history-card-header h2 {
+        margin: 0;
+
+        font-size: 20px;
+
+        color: #111827;
+    }
+
+
+    .history-search {
+        width: 250px;
+
+        padding: 11px 14px;
+
+        border:
+            1px solid #cbd5e1;
+
+        border-radius: 8px;
+
+        outline: none;
+
+        font-size: 13px;
+    }
+
+    .history-search:focus {
+        border-color: #2563eb;
+
+        box-shadow:
+            0 0 0 3px rgba(
+                37,
+                99,
+                235,
+                0.1
+            );
+    }
+
+
+    .table-wrapper {
+        width: 100%;
+
+        overflow-x: auto;
+    }
+
+    .history-table {
+        width: 100%;
+
+        border-collapse: collapse;
+
+        min-width: 850px;
+    }
+
+    .history-table th {
+        background: #f8fafc;
+
+        color: #475569;
+
+        font-size: 12px;
+
+        font-weight: 600;
+
+        text-align: left;
+
+        padding: 14px;
+    }
+
+    .history-table td {
+        padding: 15px 14px;
+
+        border-top:
+            1px solid #e2e8f0;
+
+        color: #475569;
+
+        font-size: 12px;
+    }
+
+    .history-table tr:hover {
+        background: #f8fafc;
+    }
+
+
+    .scan-id {
+        color: #2563eb;
+
+        font-weight: 700;
+
+        text-decoration: none;
+    }
+
+    .scan-id:hover {
+        text-decoration: underline;
+    }
+
+
+    .risk-badge {
+        display: inline-flex;
+
+        align-items: center;
+
+        padding: 5px 10px;
+
+        border-radius: 20px;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        text-transform: uppercase;
+    }
+
+    .risk-low {
+        background: #dcfce7;
+
+        color: #166534;
+    }
+
+    .risk-medium {
+        background: #dbeafe;
+
+        color: #1e40af;
+    }
+
+    .risk-high {
+        background: #fee2e2;
+
+        color: #991b1b;
+    }
+
+    .risk-critical {
+        background: #7f1d1d;
+
+        color: white;
+    }
+
+
+    .view-button {
+        display: inline-block;
+
+        padding: 8px 12px;
+
+        background: #eff6ff;
+
+        color: #2563eb;
+
+        border-radius: 7px;
+
+        text-decoration: none;
+
+        font-size: 11px;
+
+        font-weight: 600;
+    }
+
+    .view-button:hover {
+        background: #dbeafe;
+    }
+
+
+    .empty-history {
+        text-align: center;
+
+        padding: 60px 20px;
+
+        color: #64748b;
+    }
+
+    .empty-history-title {
+        font-size: 20px;
+
+        font-weight: 700;
+
+        color: #334155;
+
+        margin-bottom: 8px;
+    }
+
+    .empty-history-text {
+        font-size: 13px;
+
+        margin-bottom: 20px;
+    }
+
+
+    @media (max-width: 700px) {
+
+        .history-hero {
+            padding: 22px;
+        }
+
+        .history-hero h1 {
+            font-size: 24px;
+        }
+
+        .history-card {
+            padding: 15px;
+        }
+
+        .history-search {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+
+<!-- HERO -->
+
+<section class="history-hero">
+
+    <h1>
+        Scan History
+    </h1>
+
+    <p>
+        View and review all previous CyberGuard AI security scans.
+    </p>
+
+
+    <div class="history-actions">
+
+        <a
+            href="{{ url_for('scan') }}"
+            class="history-button history-button-primary"
+        >
+            Start New Scan
+        </a>
+
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="history-button history-button-light"
+        >
+            Back to Dashboard
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- HISTORY CARD -->
+
+<section class="history-card">
+
+
+    <div class="history-card-header">
+
+        <h2>
+            Security Scan Records
+        </h2>
+
+
+        <input
+            type="text"
+            id="scanSearch"
+            class="history-search"
+            placeholder="Search scans..."
+        >
+
+    </div>
+
+
+    {% if scans %}
+
+
+        <div class="table-wrapper">
+
+            <table
+                class="history-table"
+                id="scanTable"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Scan ID
+                        </th>
+
+                        <th>
+                            Date and Time
+                        </th>
+
+                        <th>
+                            Device
+                        </th>
+
+                        <th>
+                            Operating System
+                        </th>
+
+                        <th>
+                            Risk Score
+                        </th>
+
+                        <th>
+                            Risk Level
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for scan in scans %}
+
+                    <tr>
+
+
+                        <td>
+
+                            <a
+                                href="{{ url_for(
+                                    'scan_details',
+                                    scan_id=scan['id']
+                                ) }}"
+                                class="scan-id"
+                            >
+
+                                #{{ scan['id'] }}
+
+                            </a>
+
+                        </td>
+
+
+                        <td>
+
+                            {{ scan['scanned_at'] }}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ scan['hostname'] }}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ scan['operating_system'] }}
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+
+                                {{ scan['risk_score'] }}
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if scan['risk_level'] == 'Critical' %}
+
+                                <span
+                                    class="risk-badge risk-critical"
+                                >
+                                    Critical
+                                </span>
+
+
+                            {% elif scan['risk_level'] == 'High' %}
+
+                                <span
+                                    class="risk-badge risk-high"
+                                >
+                                    High
+                                </span>
+
+
+                            {% elif scan['risk_level'] == 'Medium' %}
+
+                                <span
+                                    class="risk-badge risk-medium"
+                                >
+                                    Medium
+                                </span>
+
+
+                            {% else %}
+
+                                <span
+                                    class="risk-badge risk-low"
+                                >
+                                    Low
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            <a
+                                href="{{ url_for(
+                                    'scan_details',
+                                    scan_id=scan['id']
+                                ) }}"
+                                class="view-button"
+                            >
+                                View Details
+                            </a>
+
+                        </td>
+
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="empty-history">
+
+            <div class="empty-history-title">
+                No Scan History
+            </div>
+
+            <div class="empty-history-text">
+                You have not completed any security scans yet.
+            </div>
+
+
+            <a
+                href="{{ url_for('scan') }}"
+                class="history-button history-button-primary"
+            >
+                Start Your First Scan
+            </a>
+
+        </div>
+
+
+    {% endif %}
+
+
+</section>
+
+
+<script>
+
+    const searchInput =
+        document.getElementById("scanSearch");
+
+    const table =
+        document.getElementById("scanTable");
+
+
+    if (searchInput && table) {
+
+        searchInput.addEventListener(
+            "keyup",
+            function () {
+
+                const searchValue =
+                    this.value.toLowerCase();
+
+                const rows =
+                    table
+                    .getElementsByTagName("tbody")[0]
+                    .getElementsByTagName("tr");
+
+
+                for (
+                    let i = 0;
+                    i < rows.length;
+                    i++
+                ) {
+
+                    const rowText =
+                        rows[i]
+                        .textContent
+                        .toLowerCase();
+
+
+                    if (
+                        rowText.includes(
+                            searchValue
+                        )
+                    ) {
+
+                        rows[i].style.display = "";
+
+                    } else {
+
+                        rows[i].style.display = "none";
+
+                    }
+
+                }
+
+            }
+        );
+
+    }
+
+</script>
+
+{% endblock %}
